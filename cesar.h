@@ -3,7 +3,9 @@
  * 
  * Le projet consiste en le déchiffrage d'un texte d'un fichier en entree standard
  * le texte en clair est enregistré dans un fichier en sortie standard
+ * 
  * @author  Juliette Létondot
+ * 
  */
 
 
@@ -18,6 +20,7 @@ identifiants en snake case
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 // constantes
 #define MAX_CARACTERES 80
@@ -26,7 +29,6 @@ identifiants en snake case
 #define ERR_MANQUE_ARGUMENTS "Attention erreur argument manquant \n"
 #define ERR_TROP_ARGUMENTS "Attention erreur trop d'arguments \n"
 #define ERR_TEXTE_TROP_LONG "Attention erreur texte trop long"
-#define ASCII(X) ((int)(X))
 
 // types
 enum erreurs {
@@ -70,3 +72,49 @@ void erreur_manque_arguments(int argc);
  */
 void erreur_trop_arguments(int argc);
 
+/**
+ * appelle les fonctions de gestion des erreurs
+ * @param   int argc       nombre d'arguments en entrée
+ *          char *argv[]   liste des arguments
+ */
+void gestion_erreurs(int argc, char *argv[]);
+
+/**
+ * calcule le nombre de caracteres du texte chiffré
+ * @param   cesar *c   pointeur vers la structure contenant 5 paramètres avec les fichiers utilisés, 
+ *                     les tableaux contenant les textes chiffré et clair et la taille
+ */
+void recuperer_taille(cesar *c);
+
+/**
+ * remplit le tableau chiffre de la structure c avec le texte chiffré
+ * @param   cesar *c   pointeur vers la structure qui contient le champ qui sera modifié
+ */
+void recuperer_texte_chiffre(cesar *c);
+
+/**
+ * calcule un nouveau caractère décalé de la clef par rapport à celui de référence
+ * @param   cesar *c      pointeur vers la structure c qui contient le texte chiffré et déchiffré
+ *          int indice    indice du caractère à décaler dans le tableau chiffre de c
+ */
+void decaler_caractere(cesar *c, int indice);
+
+/**
+ * remplit le tableau clair de la structure c avec le texte en clair
+ * @param   cesar *c   pointeur vers la structure c qui contient le texte en clair
+ */
+void remplir_tableau_clair(cesar *c);
+
+/**
+ * écrit dans le fichier en sortie le message en clair
+ * @param   cesar *c   pointeur vers la structure c qui contient le texte en clair
+ */
+void ecrire_clair(cesar *c);
+
+/**
+ * appelle les fonctions intermédiaires pour déchiffrer le message et l'écrire dans le 
+ * fichier en sortie
+ * @param   cesar *c   pointeur vers la structure c qui contient les informations
+ *                     sur les message à déchiffrer
+ */
+void dechiffrer_message(cesar *c);
