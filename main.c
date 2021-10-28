@@ -14,13 +14,13 @@ identifiants en snake case
 
 // main doit faire 10 lignes max
 int main(int argc, char *argv[]){
-    gestion_erreurs(argc, argv);
     cesar c;
-    c.entree = fopen(argv[1],"r");
-    c.sortie = fopen(argv[2],"w");
+    afficher_manuel(argc, argv, &c);
+    gestion_erreurs_systeme(argv);
+    ouvrir_fichiers(argv, &c);
+    gestion_erreurs(argc, argv, &c);
     // appel fonctions
     dechiffrer_message(&c);
-    fclose(c.entree);
-    fclose(c.sortie);
+    fermer_fichiers(&c);
     return 0;
 }

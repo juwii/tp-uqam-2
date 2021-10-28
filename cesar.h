@@ -28,13 +28,20 @@ identifiants en snake case
 #define MANUEL "Manuel d'utilisation de %s : \n"
 #define ERR_MANQUE_ARGUMENTS "Attention erreur argument manquant \n"
 #define ERR_TROP_ARGUMENTS "Attention erreur trop d'arguments \n"
-#define ERR_TEXTE_TROP_LONG "Attention erreur texte trop long"
+#define ERR_TEXTE_TROP_LONG "Attention erreur texte trop long\n"
+#define ERR_LECTURE_ENTREE "Erreur système : le fichier en entrée n'existe pas ou n'est pas disponible en lecture\n"
+#define ERR_PERMISSION_SORTIE "Erreur système : pas de permission d'écriture sur le fichier en sortie\n"
 
 // types
 enum erreurs {
-   MANQUE_ARGUMENTS = 404,
+   MANQUE_ARGUMENTS = 44,
    TROP_ARGUMENTS = 1,
    TEXTE_TROP_LONG = 2
+};
+
+enum erreurs_systeme {
+   ERREUR_LECTURE_ENTREE = 3,
+   ERREUR_PERMISSION_SORTIE = 4
 };
 
 typedef struct {
@@ -54,30 +61,42 @@ typedef struct {
 void afficher_erreurs(enum erreurs erreur);
 
 /**
-* affiche le manuel d'utilisation 
-* @param   int argc      nombre d'arguments en entrée
-           char *argv    liste des arguments en entrée
-*/
-void afficher_manuel(int argc, char *argv[]);
+ * affiche le manuel d'utilisation 
+ * @param   int argc      nombre d'arguments en entrée
+ *          char *argv    liste des arguments en entrée
+ *          cesar *c   structure contenant les informations du message
+ */
+void afficher_manuel(int argc, char *argv[], cesar *c);
 
 /**
  * affiche une erreur s'il n'y a pas 3 arguments
  * @param   int argc   nombre d'arguments en entrée
+ *          cesar *c   structure contenant les informations du message
  */
-void erreur_manque_arguments(int argc);
+void erreur_manque_arguments(int argc, cesar *c);
 
 /**
  * affiche une erreur s'il y a plus de 3 arguments
  * @param   int argc   nombre d'arguments en entrée
+ *          cesar *c   structure contenant les informations du message
  */
-void erreur_trop_arguments(int argc);
+void erreur_trop_arguments(int argc, cesar *c);
+
+/**
+ * compte le nombre de caracteres sur chaque ligne pour vérifier que la condition
+ * sur le maximum de caracteres par ligne est respectée
+ * La fonction affiche une erreur si elle n'est pas respectée
+ * @param   cesar *c   pointeur vers la structure qui contient le fichier à examiner
+ */
+void verifier_longueur_texte(cesar *c);
 
 /**
  * appelle les fonctions de gestion des erreurs
  * @param   int argc       nombre d'arguments en entrée
  *          char *argv[]   liste des arguments
+ *          cesar *c       structure contenant les informations du message
  */
-void gestion_erreurs(int argc, char *argv[]);
+void gestion_erreurs(int argc, char *argv[], cesar *c);
 
 /**
  * calcule le nombre de caracteres du texte chiffré
@@ -118,3 +137,27 @@ void ecrire_clair(cesar *c);
  *                     sur les message à déchiffrer
  */
 void dechiffrer_message(cesar *c);
+
+/**
+ * ferme les fichiers c.entree et c.sortie
+ * @param   cesar *c   pointeur vers la structure qui contient les fichiers à fermer
+ */
+void fermer_fichiers(cesar *c);
+
+/**
+ * ouvre les fichiers c.entree et c.sortie
+ * @param   cesar *c   pointeur vers la structure qui contient les fichiers à ouvrir
+ */
+void ouvrir_fichiers(char *argv[], cesar *c);
+
+/**
+ * affiche les messages d'erreurs systèmes quand on tente d'ouvrir les fichiers
+ * @param   enum erreurs_systeme erreur   numéro de l'erreur système
+ */
+void afficher_erreurs_systeme(enum erreurs_systeme erreur);
+
+/**
+ * détecte les erreurs systèmes avant l'ouverture des fichiers
+ * @param   char *argv[]   liste des arguments en entrée
+ */
+void gestion_erreurs_systeme(char *argv[]);
