@@ -12,6 +12,6 @@ clean:
 	#rm *.html & rm cesar 
 	
 start: 	
-	#bats check.bats
+	bats check.bats
 
 

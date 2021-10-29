@@ -25,9 +25,9 @@ identifiants en snake case
 // constantes
 #define MAX_CARACTERES 80
 #define CLEF 3
-#define MANUEL "Manuel d'utilisation de %s : \n"
-#define ERR_MANQUE_ARGUMENTS "Attention erreur argument manquant \n"
-#define ERR_TROP_ARGUMENTS "Attention erreur trop d'arguments \n"
+#define MANUEL "Manuel d'utilisation de %s :\n"
+#define ERR_MANQUE_ARGUMENTS "Attention erreur argument manquant\n"
+#define ERR_TROP_ARGUMENTS "Attention erreur trop d'arguments\n"
 #define ERR_TEXTE_TROP_LONG "Attention erreur texte trop long\n"
 #define ERR_LECTURE_ENTREE "Erreur système : le fichier en entrée n'existe pas ou n'est pas disponible en lecture\n"
 #define ERR_PERMISSION_SORTIE "Erreur système : pas de permission d'écriture sur le fichier en sortie\n"
@@ -160,4 +160,4 @@ void afficher_erreurs_systeme(enum erreurs_systeme erreur);
  * détecte les erreurs systèmes avant l'ouverture des fichiers
  * @param   char *argv[]   liste des arguments en entrée
  */
-void gestion_erreurs_systeme(char *argv[]);
+void gestion_erreurs_systeme(char *argv[], cesar *c, int argc);

@@ -16,7 +16,7 @@ identifiants en snake case
 int main(int argc, char *argv[]){
     cesar c;
     afficher_manuel(argc, argv, &c);
-    gestion_erreurs_systeme(argv);
+    gestion_erreurs_systeme(argv, &c, argc);
     ouvrir_fichiers(argv, &c);
     gestion_erreurs(argc, argv, &c);
     // appel fonctions

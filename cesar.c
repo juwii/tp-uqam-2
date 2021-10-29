@@ -17,7 +17,7 @@ identifiants en snake case
 // affichage des erreurs a voir si les break marchent
 void afficher_erreurs(enum erreurs erreur){
    switch(erreur){
-      case 404 : printf(ERR_MANQUE_ARGUMENTS); 
+      case 44 : printf(ERR_MANQUE_ARGUMENTS); 
          break;
       case 1: printf(ERR_TROP_ARGUMENTS); 
          break;
@@ -42,8 +42,7 @@ void afficher_erreurs_systeme(enum erreurs_systeme erreur){
 // manque des arguments
 void erreur_manque_arguments(int argc, cesar *c){
    if(argc < 3) {
-      fermer_fichiers(c);
-      afficher_erreurs(404);
+      afficher_erreurs(44);
       exit(44);
    }
 }
@@ -51,7 +50,6 @@ void erreur_manque_arguments(int argc, cesar *c){
 // trop d'arguments
 void erreur_trop_arguments(int argc, cesar *c){
     if(argc > 3) {
-       fermer_fichiers(c);
        afficher_erreurs(1);
        exit(1);
     }
@@ -106,16 +104,15 @@ void erreur_permission_ecriture(char *argv[]){
    }
 }
 
-void gestion_erreurs_systeme(char *argv[]){
+void gestion_erreurs_systeme(char *argv[], cesar *c, int argc){
+   erreur_manque_arguments(argc, c);
+   erreur_trop_arguments(argc, c);
    erreur_fichier_inexistant(argv);
    erreur_permission_ecriture(argv);
 }
 
 // appelle fonctions erreurs
 void gestion_erreurs(int argc, char *argv[], cesar *c){
-   erreur_manque_arguments(argc, c);
-   erreur_trop_arguments(argc, c);
-   erreur_fichier_inexistant(argv);
    c->taille = 0; // initialisation de la taille 
    verifier_longueur_texte(c);
 }
@@ -160,10 +157,10 @@ void recuperer_texte_chiffre(cesar *c){
 // decaler un caractere
 void decaler_caractere(cesar *c, int indice){
    if(c->chiffre[indice] - CLEF < 'a' && islower(c->chiffre[indice])!=0){
-      c->clair[indice] = 'z' - CLEF + c->chiffre[indice] - 'a';
+      c->clair[indice] = 'z' - CLEF + c->chiffre[indice] - 'a' + 1;
    } 
    else if(c->chiffre[indice] - CLEF < 'A' && isupper(c->chiffre[indice])!=0){
-      c->clair[indice] = (char)('Z' - CLEF + c->chiffre[indice]);
+      c->clair[indice] = 'Z' - CLEF + c->chiffre[indice] - 'A' + 1;
    } else {
       c->clair[indice] = c->chiffre[indice] - CLEF;
    }
