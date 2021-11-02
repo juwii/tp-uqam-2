@@ -1,10 +1,5 @@
 *.swp 
-<<<<<<< HEAD
-*.html 
-cesar
-=======
 *.html
 *.o 
 cesar
 
->>>>>>> dev

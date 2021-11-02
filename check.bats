@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-# Tests
-=======
 # Tests
 
 # def des constantes
@@ -123,5 +119,3 @@ erreur_longueur_texte="Attention erreur texte trop long"
    [ "${lines[2]}" = "Enfin plus maintenant haha ! 8)  " ]
 }
 
-
->>>>>>> dev
