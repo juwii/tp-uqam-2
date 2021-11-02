@@ -1,4 +1,5 @@
 *.swp 
-*.html 
+*.html
+*.o 
 cesar
 

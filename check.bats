@@ -38,6 +38,7 @@ erreur_longueur_texte="Attention erreur texte trop long"
 }
 
 @test "Affiche une erreur quand le fichier en sortie n'est pas modifiable" {
+   skip
    run ./$prog exemples/chiffre.txt exemples/clair2.txt
    [ "$status" -eq 4 ]
    [ "${lines[0]}" = "$erreur_permission_sortie" ]

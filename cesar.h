@@ -22,7 +22,7 @@ identifiants en snake case
 #include <string.h>
 #include <ctype.h>
 
-// constantes
+// déclaration des constantes
 #define MAX_CARACTERES 80
 #define CLEF 3
 #define MANUEL "Manuel d'utilisation de %s :\n"
@@ -32,9 +32,9 @@ identifiants en snake case
 #define ERR_LECTURE_ENTREE "Erreur système : le fichier en entrée n'existe pas ou n'est pas disponible en lecture\n"
 #define ERR_PERMISSION_SORTIE "Erreur système : pas de permission d'écriture sur le fichier en sortie\n"
 
-// types
+// déclaration des types
 enum erreurs {
-   MANQUE_ARGUMENTS = 44,
+   MANQUE_ARGUMENTS = 44, 
    TROP_ARGUMENTS = 1,
    TEXTE_TROP_LONG = 2
 };
@@ -52,7 +52,7 @@ typedef struct {
    FILE* sortie; // fichier en sortie qui contiendra le texte en clair
 }cesar;
 
-// definition des fonctions
+// declaration des fonctions
 
 /**
 * affiche une description de l'erreur rencontrée
@@ -81,6 +81,15 @@ void erreur_manque_arguments(int argc, cesar *c);
  *          cesar *c   structure contenant les informations du message
  */
 void erreur_trop_arguments(int argc, cesar *c);
+
+/**
+ * teste si la taille de la longueur de la ligne respecte le maximum de caractères 
+ * affiche un erreur si ce n'est pas le cas
+ * @param   int taille      taille de la ligne
+ *          cesar *c        pointeur vers la structure qui contient le fichier à examiner
+ *          char caractere  caractere à vérifier exécute la vérification si c'est un fin de ligne
+ */
+void erreur_longueur_texte(int taille, cesar *c, char caractere);
 
 /**
  * compte le nombre de caracteres sur chaque ligne pour vérifier que la condition
@@ -155,6 +164,18 @@ void ouvrir_fichiers(char *argv[], cesar *c);
  * @param   enum erreurs_systeme erreur   numéro de l'erreur système
  */
 void afficher_erreurs_systeme(enum erreurs_systeme erreur);
+
+/**
+ * affiche une erreur si le fichier en entrée ne s'ouvre pas
+ * @param   char *argv[]   liste des arguments en entrée
+ */
+void erreur_fichier_inexistant(char *argv[]);
+
+/**
+ * affiche une erreur si le fichier en sortie ne s'ouvre pas en écriture
+ * @param   char *argv[]   liste des arguments en entrée
+ */
+void erreur_permission_ecriture(char *argv[]);
 
 /**
  * détecte les erreurs systèmes avant l'ouverture des fichiers
