@@ -1,4 +1,4 @@
-CIBLES = clean build start
+CIBLES = build start
 OPTIONS = -Wall -Wextra -std=c11
 OBJS = cesar.o main.o
 FILES = cesar.c main.c cesar.h
@@ -14,7 +14,6 @@ link: $(FILES)
 
 html: 	
 	pandoc -c github-pandoc.css -s README.md -o README.html 	
-	pandoc -s sujet.md -c github-pandoc.css -o sujet.html 
 
 start:
 	bats check.bats

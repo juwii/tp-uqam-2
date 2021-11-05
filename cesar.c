@@ -13,6 +13,7 @@ gerer erreurs systèmes v
 identifiants en snake case v
 */
 
+// Attention free la mémoire avant de exit
 
 /********** Définition des fonctions **********/
 
@@ -36,16 +37,18 @@ void afficher_erreurs_systeme(enum erreurs_systeme erreur){
    }
 }
 
-void erreur_manque_arguments(int argc, cesar *c){
+void erreur_manque_arguments(int argc, char *argv[], cesar *c){
    if(argc < 3) {
       afficher_erreurs(44);
+      printf(MANUEL, argv[0], argv[0]);
       exit(44);
    }
 }
 
-void erreur_trop_arguments(int argc, cesar *c){
+void erreur_trop_arguments(int argc, char *argv[], cesar *c){
    if(argc > 3) {
       afficher_erreurs(1);
+      printf(MANUEL, argv[0], argv[0]);
       exit(1);
    }
 }
@@ -53,7 +56,7 @@ void erreur_trop_arguments(int argc, cesar *c){
 void erreur_longueur_texte(int taille, cesar *c, char caractere){
    if(caractere=='\n'){
       if(taille > MAX_CARACTERES) {
-         fermer_fichiers(c);
+         fermer_fichiers(c); 
          afficher_erreurs(2);
          exit(2);
       }
@@ -72,7 +75,7 @@ void verifier_longueur_texte(cesar *c){
 
 void afficher_manuel(int argc, char *argv[], cesar *c){
    if(argc == 1) {
-      printf(MANUEL, argv[0]);
+      printf(MANUEL, argv[0], argv[0]);
       exit(0);
    }
 }
@@ -86,14 +89,15 @@ void erreur_fichier_inexistant(char *argv[]){
 
 void erreur_permission_ecriture(char *argv[]){
    if(!(fopen(argv[2], "w"))){
+      // fermer fichier en entrée
       afficher_erreurs_systeme(4);
       exit(4);
    }
 }
 
 void gestion_erreurs_systeme(char *argv[], cesar *c, int argc){
-   erreur_manque_arguments(argc, c);
-   erreur_trop_arguments(argc, c);
+   erreur_manque_arguments(argc, argv, c);
+   erreur_trop_arguments(argc, argv, c);
    erreur_fichier_inexistant(argv);
    erreur_permission_ecriture(argv);
 }
@@ -115,13 +119,17 @@ void recuperer_taille(cesar *c){
 }
 
 void initialiser_pointeurs(cesar *c){
-   c->chiffre = malloc(sizeof(char)*c->taille);
-   c->clair = malloc(sizeof(char)*c->taille);
+   c->chiffre = malloc(sizeof(char)*c->taille); // allocation mémoire à libérer
+   c->clair = malloc(sizeof(char)*c->taille); // allocation mémoire à libérer
+   if(!(c->chiffre) || !(c->chiffre)) {
+      fprintf(stderr, "Erreur allocation de mémoire");
+      exit(5);
+   }
 }
 
 void liberer_pointeurs(cesar *c){
-   free(c->chiffre);
-   free(c->clair);
+   free(c->chiffre); // libération de la mémoire allouée
+   free(c->clair); // libération de la mémoire allouée
 }
 
 void recuperer_texte_chiffre(cesar *c){
@@ -166,11 +174,11 @@ void ecrire_clair(cesar *c){
 
 void dechiffrer_message(cesar *c){
    recuperer_taille(c);
-   initialiser_pointeurs(c);
+   initialiser_pointeurs(c); // allocation mémoire
    recuperer_texte_chiffre(c);
    remplir_tableau_clair(c);
    ecrire_clair(c);
-   liberer_pointeurs(c);
+   liberer_pointeurs(c); // libération mémoire
 }
 
 void ouvrir_fichiers(char *argv[], cesar *c){
@@ -179,7 +187,9 @@ void ouvrir_fichiers(char *argv[], cesar *c){
 }
 
 void fermer_fichiers(cesar *c){
-   fclose(c->entree);
-   fclose(c->sortie);
+   if(fclose(c->entree)==EOF || fclose(c->sortie)==EOF){
+      fprintf(stderr,ERR_FERMETURE_FICHIER);
+      exit(6);
+   }
 }
 

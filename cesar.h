@@ -25,12 +25,19 @@ identifiants en snake case
 // déclaration des constantes
 #define MAX_CARACTERES 80
 #define CLEF 3
-#define MANUEL "Manuel d'utilisation de %s :\n"
+#define MANUEL "Manuel d'utilisation de %s :\n\
+%s FICHIER1 FICHIER2\n\
+Le programme déchiffre le message contenu dans FICHIER1 et écrit le clair dans FICHIER2.\n\
+FICHIER1 : fichier en entrée contenant le message chiffré.\n\
+FICHIER2 : fichier en sortie qui va contenir le message déchiffré.\n\
+Attention : le programme va écraser le contenu du FICHIER2.\n\
+"
 #define ERR_MANQUE_ARGUMENTS "Attention erreur argument manquant\n"
 #define ERR_TROP_ARGUMENTS "Attention erreur trop d'arguments\n"
 #define ERR_TEXTE_TROP_LONG "Attention erreur texte trop long\n"
 #define ERR_LECTURE_ENTREE "Erreur système : le fichier en entrée n'existe pas ou n'est pas disponible en lecture\n"
 #define ERR_PERMISSION_SORTIE "Erreur système : pas de permission d'écriture sur le fichier en sortie\n"
+#define ERR_FERMETURE_FICHIER "Erreur lors de la fermeture des fichiers\n"
 
 // déclaration des types
 enum erreurs {
@@ -70,17 +77,19 @@ void afficher_manuel(int argc, char *argv[], cesar *c);
 
 /**
  * affiche une erreur s'il n'y a pas 3 arguments
- * @param   int argc   nombre d'arguments en entrée
- *          cesar *c   structure contenant les informations du message
+ * @param   int argc       nombre d'arguments en entrée
+ *          cesar *c       structure contenant les informations du message
+ *          char *argv[]   liste des arguments en entrée
  */
-void erreur_manque_arguments(int argc, cesar *c);
+void erreur_manque_arguments(int argc, char *argv[], cesar *c);
 
 /**
  * affiche une erreur s'il y a plus de 3 arguments
- * @param   int argc   nombre d'arguments en entrée
- *          cesar *c   structure contenant les informations du message
+ * @param   int argc       nombre d'arguments en entrée
+ *          cesar *c       structure contenant les informations du message
+ *          char *argv[]   liste des arguments en entrée
  */
-void erreur_trop_arguments(int argc, cesar *c);
+void erreur_trop_arguments(int argc, char *argv[], cesar *c);
 
 /**
  * teste si la taille de la longueur de la ligne respecte le maximum de caractères 
@@ -142,6 +151,7 @@ void ecrire_clair(cesar *c);
 /**
  * appelle les fonctions intermédiaires pour déchiffrer le message et l'écrire dans le 
  * fichier en sortie
+ * Alloue de la mémoire dynamiquement et la libère à la fin de la fonction
  * @param   cesar *c   pointeur vers la structure c qui contient les informations
  *                     sur les message à déchiffrer
  */
