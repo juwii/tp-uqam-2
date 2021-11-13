@@ -6,7 +6,7 @@ build:
     stage: build_stage
     script:
         # compilation
-        - make build 
+        - make link 
     artifacts:
         paths:
             #executable
