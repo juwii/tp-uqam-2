@@ -1,14 +1,14 @@
-CIBLES = build start
+CIBLES = link start
 OPTIONS = -Wall -Wextra -std=c11
 OBJS = cesar.o main.o
-FILES = cesar.c main.c cesar.h
-
-all: $(CIBLES)
+FICHIERS = cesar.c main.c cesar.h
 	
-build: $(OBJS)
+link: $(OBJS)
 	gcc -o cesar $(OPTIONS) $(OBJS) 
 
-link: $(FILES)
+all: $(CIBLES)
+
+build: $(FICHIERS)
 	gcc -c cesar.c 
 	gcc -c main.c
 
@@ -18,7 +18,7 @@ html:
 start:
 	bats check.bats
 
-.PHONY: clean
+.PHONY: make clean
 
 clean: 	
 	rm cesar	

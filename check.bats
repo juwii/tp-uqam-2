@@ -8,10 +8,11 @@ aide_premiere_ligne="Manuel d'utilisation de ./cesar :"
 erreur_manque_argument="Attention erreur argument manquant"
 erreur_trop_argument="Attention erreur trop d'arguments"
 erreur_lecture_entree="Erreur système : le fichier en entrée n'existe pas ou n'est pas disponible en lecture"
-erreur_permission_sortie="Erreur système : pas de permission d'écriture sur le fichier en sortie"
+erreur_permission_sortie="Erreur système : le chemin n'existe pas ou pas de permission d'écriture sur le fichier en sortie"
 erreur_longueur_texte="Attention erreur texte trop long"
+fichier_vide="Le fichier à déchiffrer est vide"
 
-# Normal usage
+# Tests
 
 @test "Avec aucun argument, affiche le manuel" {
    run ./$prog
@@ -37,9 +38,8 @@ erreur_longueur_texte="Attention erreur texte trop long"
    [ "${lines[0]}" = "$erreur_lecture_entree" ]
 }
 
-@test "Affiche une erreur quand le fichier en sortie n'est pas modifiable" {
-   skip
-   run ./$prog exemples/chiffre.txt exemples/clair2.txt
+@test "Affiche une erreur quand le chemin vers le fichier en sortie n'existe pas" {
+   run ./$prog exemples/chiffre.txt dossier_non_existant/clair.txt
    [ "$status" -eq 4 ]
    [ "${lines[0]}" = "$erreur_permission_sortie" ]
 }
@@ -73,8 +73,6 @@ erreur_longueur_texte="Attention erreur texte trop long"
    [ "$status" -eq 0 ]
    [ "${lines[0]}" = "abcdefghijklmnopqrstuvwxyz" ]
 } 
-
-# comment on fait pour accents ?
 
 @test "Le déchiffrement respecte la casse" {
    run ./$prog exemples/minuscule_maj.txt exemples/clair.txt
@@ -119,3 +117,9 @@ erreur_longueur_texte="Attention erreur texte trop long"
    [ "${lines[2]}" = "Enfin plus maintenant haha ! 8)  " ]
 }
 
+@test "Déchiffre le message du fichier test de Serge Dogny" {
+   run ./$prog exemples/7.txt exemples/clair.txt
+   [ "$status" -eq 0 ]
+   cmp exemples/clair.txt exemples/7-dechiffre.txt
+   [ "$status" -eq 0 ]
+}

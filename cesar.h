@@ -1,22 +1,14 @@
 /**
  * TP2 : décryption du chiffrement de César
  * 
- * Le projet consiste en le déchiffrage d'un texte d'un fichier en entree standard
- * le texte en clair est enregistré dans un fichier en sortie standard
+ * Le projet a pour but de déchiffrer un texte d'un fichier en entree 
+ * le texte en clair est enregistré dans un fichier en sortie 
  * 
  * @author  Juliette Létondot
  * 
  */
 
-
-/* CONTRAINTES
-indentation de 3 espaces
-fonctions pas plus de 10 lignes
-gerer erreurs systèmes
-identifiants en snake case
-*/
-
-// import
+// imports
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,7 +28,7 @@ Attention : le programme va écraser le contenu du FICHIER2.\n\
 #define ERR_TROP_ARGUMENTS "Attention erreur trop d'arguments\n"
 #define ERR_TEXTE_TROP_LONG "Attention erreur texte trop long\n"
 #define ERR_LECTURE_ENTREE "Erreur système : le fichier en entrée n'existe pas ou n'est pas disponible en lecture\n"
-#define ERR_PERMISSION_SORTIE "Erreur système : pas de permission d'écriture sur le fichier en sortie\n"
+#define ERR_PERMISSION_SORTIE "Erreur système : le chemin n'existe pas ou pas de permission d'écriture sur le fichier en sortie\n"
 #define ERR_FERMETURE_FICHIER "Erreur lors de la fermeture des fichiers\n"
 
 // déclaration des types
@@ -71,25 +63,22 @@ void afficher_erreurs(enum erreurs erreur);
  * affiche le manuel d'utilisation 
  * @param   int argc      nombre d'arguments en entrée
  *          char *argv    liste des arguments en entrée
- *          cesar *c   structure contenant les informations du message
  */
-void afficher_manuel(int argc, char *argv[], cesar *c);
+void afficher_manuel(int argc, char *argv[]);
 
 /**
  * affiche une erreur s'il n'y a pas 3 arguments
  * @param   int argc       nombre d'arguments en entrée
- *          cesar *c       structure contenant les informations du message
  *          char *argv[]   liste des arguments en entrée
  */
-void erreur_manque_arguments(int argc, char *argv[], cesar *c);
+void erreur_manque_arguments(int argc, char *argv[]);
 
 /**
  * affiche une erreur s'il y a plus de 3 arguments
  * @param   int argc       nombre d'arguments en entrée
- *          cesar *c       structure contenant les informations du message
  *          char *argv[]   liste des arguments en entrée
  */
-void erreur_trop_arguments(int argc, char *argv[], cesar *c);
+void erreur_trop_arguments(int argc, char *argv[]);
 
 /**
  * teste si la taille de la longueur de la ligne respecte le maximum de caractères 
@@ -110,11 +99,9 @@ void verifier_longueur_texte(cesar *c);
 
 /**
  * appelle les fonctions de gestion des erreurs
- * @param   int argc       nombre d'arguments en entrée
- *          char *argv[]   liste des arguments
- *          cesar *c       structure contenant les informations du message
+ * @param   cesar *c       structure contenant les informations du message
  */
-void gestion_erreurs(int argc, char *argv[], cesar *c);
+void gestion_erreurs(cesar *c);
 
 /**
  * calcule le nombre de caracteres du texte chiffré
@@ -165,7 +152,8 @@ void fermer_fichiers(cesar *c);
 
 /**
  * ouvre les fichiers c.entree et c.sortie
- * @param   cesar *c   pointeur vers la structure qui contient les fichiers à ouvrir
+ * @param   cesar *c       pointeur vers la structure qui contient les fichiers à ouvrir
+ *          char *argv[]   liste des arguments en entrée   
  */
 void ouvrir_fichiers(char *argv[], cesar *c);
 
@@ -190,5 +178,6 @@ void erreur_permission_ecriture(char *argv[]);
 /**
  * détecte les erreurs systèmes avant l'ouverture des fichiers
  * @param   char *argv[]   liste des arguments en entrée
+ *          int argc       nombre d'arguments en entrée
  */
-void gestion_erreurs_systeme(char *argv[], cesar *c, int argc);
+void gestion_erreurs_systeme(char *argv[], int argc);

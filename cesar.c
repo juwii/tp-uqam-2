@@ -1,4 +1,4 @@
-/********** Inclusion **********/
+// Inclusions 
 
 #ifndef CESAR_H
 #define CESAR_H
@@ -6,16 +6,7 @@
 
 #include "cesar.h"
 
-/* ******* CONTRAINTES ***********
-indentation de 3 espaces v
-fonctions pas plus de 10 lignes v
-gerer erreurs systèmes v
-identifiants en snake case v
-*/
-
-// Attention free la mémoire avant de exit
-
-/********** Définition des fonctions **********/
+// Implémentation des fonctions 
 
 void afficher_erreurs(enum erreurs erreur){
    switch(erreur){
@@ -37,7 +28,7 @@ void afficher_erreurs_systeme(enum erreurs_systeme erreur){
    }
 }
 
-void erreur_manque_arguments(int argc, char *argv[], cesar *c){
+void erreur_manque_arguments(int argc, char *argv[]){
    if(argc < 3) {
       afficher_erreurs(44);
       printf(MANUEL, argv[0], argv[0]);
@@ -45,7 +36,7 @@ void erreur_manque_arguments(int argc, char *argv[], cesar *c){
    }
 }
 
-void erreur_trop_arguments(int argc, char *argv[], cesar *c){
+void erreur_trop_arguments(int argc, char *argv[]){
    if(argc > 3) {
       afficher_erreurs(1);
       printf(MANUEL, argv[0], argv[0]);
@@ -73,7 +64,7 @@ void verifier_longueur_texte(cesar *c){
    }
 }
 
-void afficher_manuel(int argc, char *argv[], cesar *c){
+void afficher_manuel(int argc, char *argv[]){
    if(argc == 1) {
       printf(MANUEL, argv[0], argv[0]);
       exit(0);
@@ -81,28 +72,31 @@ void afficher_manuel(int argc, char *argv[], cesar *c){
 }
 
 void erreur_fichier_inexistant(char *argv[]){
-   if(!(fopen(argv[1], "r"))){
+   FILE *f = fopen(argv[1], "r");
+   if(!f){
       afficher_erreurs_systeme(3);
       exit(3);
    }
+   fclose(f);
 }
 
 void erreur_permission_ecriture(char *argv[]){
-   if(!(fopen(argv[2], "w"))){
-      // fermer fichier en entrée
+   FILE *f = fopen(argv[2], "w");
+   if(!f){
       afficher_erreurs_systeme(4);
       exit(4);
    }
+   fclose(f);
 }
 
-void gestion_erreurs_systeme(char *argv[], cesar *c, int argc){
-   erreur_manque_arguments(argc, argv, c);
-   erreur_trop_arguments(argc, argv, c);
+void gestion_erreurs_systeme(char *argv[], int argc){
+   erreur_manque_arguments(argc, argv);
+   erreur_trop_arguments(argc, argv);
    erreur_fichier_inexistant(argv);
    erreur_permission_ecriture(argv);
 }
 
-void gestion_erreurs(int argc, char *argv[], cesar *c){
+void gestion_erreurs(cesar *c){
    c->taille = 0; 
    verifier_longueur_texte(c);
 }
@@ -119,8 +113,8 @@ void recuperer_taille(cesar *c){
 }
 
 void initialiser_pointeurs(cesar *c){
-   c->chiffre = malloc(sizeof(char)*c->taille); // allocation mémoire à libérer
-   c->clair = malloc(sizeof(char)*c->taille); // allocation mémoire à libérer
+   c->chiffre = malloc(sizeof(char)*(c->taille + 1)); // allocation mémoire à libérer
+   c->clair = malloc(sizeof(char)*(c->taille + 1)); // allocation mémoire à libérer
    if(!(c->chiffre) || !(c->chiffre)) {
       fprintf(stderr, "Erreur allocation de mémoire");
       exit(5);
@@ -136,7 +130,7 @@ void recuperer_texte_chiffre(cesar *c){
    int i = 0;
    fseek(c->entree,0,SEEK_SET);
    while(1){
-      c->chiffre[i] = fgetc(c->entree);
+      c->chiffre[i] = (char)fgetc(c->entree);
       if (feof(c->entree)) break;
       i = i + 1;
    } 
@@ -168,7 +162,7 @@ void ecrire_clair(cesar *c){
    fseek(c->sortie,0,SEEK_SET);
    int i;
    for(i = 0; i<c->taille; i++){
-      fputc(c->clair[i],c->sortie);
+      fputc((int)c->clair[i],c->sortie);
    }
 }
 
