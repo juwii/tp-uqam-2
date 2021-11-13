@@ -22,4 +22,6 @@ test:
         - mkdir -p /tmp/local
         - bash /tmp/bats/install.sh /tmp/local
         - export PATH=$PATH:/tmp/local/bin
+        - make build
         - make start
+        - make clean
