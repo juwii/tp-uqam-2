@@ -12,9 +12,6 @@ build: $(FICHIERS)
 	gcc -c cesar.c 
 	gcc -c main.c
 
-html: 	
-	pandoc -c github-pandoc.css -s README.md -o README.html 	
-
 start:
 	bats check.bats
 
